@@ -25,6 +25,18 @@ package com.example.test.controller;
 					+ "</font></body></html>";
 			return str2;
 		}
+		@RequestMapping("/registration")
+			public String registration()
+			{
+				String str3="<html><h2>Registration form</h2>"
+						+ "<form method= 'POST'>"
+						+ "<input type='text' name='username' placeholder='username'><br><br>"
+						+ "<input type='password' name='password' placeholder='password'<br><br><br>"
+						+ "<button type='submit'>submit</button> </form></html>";
+				return str3;
+			
+			}
+	
 	
 //	@GetMapping("/")
 //	public String home()
