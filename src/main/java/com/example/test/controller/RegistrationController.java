@@ -1,41 +1,45 @@
 package com.example.test.controller;
 
-import java.util.*;
-
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.http.*;
-
-import org.springframework.web.bind.annotation.*;
-
 import com.example.test.model.Registration;
 import com.example.test.service.RegistrationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/registrations")
 public class RegistrationController {
 
-	@RestController
-	public class ProductController {
-	 
-	    @Autowired
-	    private RegistrationService service;
-	    @GetMapping("/list")
-	    public List<Registration> list() {
-	        return service.listAll();
-	    }
-	    @GetMapping("/products/{id}")
-	    public ResponseEntity<Registration> get(@PathVariable Integer id) {
-	        try {
-	        	Registration reg = service.get(id);
-	            return new ResponseEntity<Registration>(reg, HttpStatus.OK);
-	        } catch (NoSuchElementException e) {
-	            return new ResponseEntity<Registration>(HttpStatus.NOT_FOUND);
-	        }      
-	    }
-	}
-	    // RESTful API methods for Retrieval operations
-	     
-	    // RESTful API method for Create operation
-	     
-	    // RESTful API method for Update operation
-	     
-	    // RESTful API method for Delete operation
-	}
+    @Autowired
+    private RegistrationService registrationService;
+
+    @GetMapping
+    public List<Registration> getAllRegistrations() {
+        return registrationService.getAllRegistrations();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Registration> getRegistrationById(@PathVariable Long id) {
+        return registrationService.getRegistrationById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping()
+    public Registration createRegistration(@RequestBody Registration registration) {
+        return registrationService.createRegistration(registration);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Registration> updateRegistration(@PathVariable Long id, @RequestBody Registration registrationDetails) {
+        return ResponseEntity.ok(registrationService.updateRegistration(id, registrationDetails));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRegistration(@PathVariable Long id) {
+        registrationService.deleteRegistration(id);
+        return ResponseEntity.noContent().build();
+    }
+}	

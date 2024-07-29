@@ -1,35 +1,43 @@
 package com.example.test.service;
 
-import java.util.List;
-
-import jakarta.transaction.Transactional;
-
+import com.example.test.model.Registration;
+import com.example.test.repository.RegistrationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.test.model.Registration;
-import com.example.test.repository.RegistrationRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-@Transactional
 public class RegistrationService {
 
-	@Autowired
-	private RegistrationRepository repo;
+    @Autowired
+    private RegistrationRepository registrationRepository;
 
-	public List<Registration> listAll() {
-		return repo.findAll();
-	}
+    public List<Registration> getAllRegistrations() {
+        return registrationRepository.findAll();
+    }
 
-//	public void save(Registration Registration) {
-//		repo.save(Registration);
-//	}
-//
-	public Registration get(Integer id) {
-		return repo.findById(id).get();
-	}
-//
-//	public void delete(Integer id) {
-//		repo.deleteById(id);
-//	}
+    public Optional<Registration> getRegistrationById(Long id) {
+        return registrationRepository.findById(id);
+    }
+
+    public Registration createRegistration(Registration registration) {
+    	registration.setUsername("admin");
+    	registration.setPassword("admin");
+        return registrationRepository.save(registration);
+    }
+
+    public Registration updateRegistration(Long id, Registration registrationDetails) {
+        Registration registration = registrationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Registration not found"));
+        registration.setUsername(registrationDetails.getUsername());
+        registration.setPassword(registrationDetails.getPassword());
+        return registrationRepository.save(registration);
+    }
+
+    public String deleteRegistration(Long id) {
+        registrationRepository.deleteById(id);
+        return "Record Deleted Successfully";
+    }
 }
