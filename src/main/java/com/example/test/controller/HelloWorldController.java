@@ -8,6 +8,13 @@ package com.example.test.controller;
 	@RestController
 	
 	public class HelloWorldController {
+		
+		  @GetMapping("/index")
+		    public String index() {
+		        return "index";
+		    }
+		 
+		 
 		@RequestMapping("/home")
 		    public String home(){
 		        return "Hello World!";
@@ -25,17 +32,17 @@ package com.example.test.controller;
 					+ "</font></body></html>";
 			return str2;
 		}
-		@RequestMapping("/registration")
-			public String registration()
-			{
-				String str3="<html><h2>Registration form</h2>"
-						+ "<form method= 'POST'>"
-						+ "<input type='text' name='username' placeholder='username'><br><br>"
-						+ "<input type='password' name='password' placeholder='password'<br><br><br>"
-						+ "<button type='submit'>submit</button> </form></html>";
-				return str3;
-			
-			}
+		@RequestMapping("/upload")
+		public String registration() {
+		    String str3 = "<html><h2>Registration form</h2>"
+		            + "<form method='POST' action='/api/registrations/upload' enctype='multipart/form-data'>"
+		            + "<input type='file' name='fn'><br><br>"
+//		            + "<input type='file' name='fn' accept='image/jpeg'><br><br>"
+
+		            + "<button type='submit'>Submit</button> </form></html>";
+		    return str3;
+		}
+
 	
 	
 //	@GetMapping("/")
